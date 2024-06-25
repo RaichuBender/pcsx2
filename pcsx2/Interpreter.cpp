@@ -142,6 +142,15 @@ void intCheckMemcheck()
 
 static void execI()
 {
+#if 0
+	if (cpuRegs.pc == 0x001b3f38)	// play__15CBGMAgentStreamPCcis
+	{
+		u32 a1 = cpuRegs.GPR.n.a1.UL[0];
+		char *pszName = (char *)vtlb_GetPhyPtr(a1);
+		printf("pszName ::> \"%s\"\n", pszName);
+		strcpy(pszName, "Event4.VSV");
+	}
+#endif
 	// execI is called for every instruction so it must remains as light as possible.
 	// If you enable the next define, Interpreter will be much slower (around
 	// ~4fps on 3.9GHz Haswell vs ~8fps (even 10fps on dev build))

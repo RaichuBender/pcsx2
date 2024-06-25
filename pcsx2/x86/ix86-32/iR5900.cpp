@@ -221,6 +221,72 @@ static ZyanStatus ZydisFormatterPrintAddressAbsolute(const ZydisFormatter* forma
 }
 #endif
 
+
+static void Force_BGM_Event4(void)
+{
+	u32 a1 = cpuRegs.GPR.n.a1.UL[0];
+	char *pszName = (char *)vtlb_GetPhyPtr(a1);
+
+	Console.WriteLn("pszName ::> \"%s\"\n", pszName);
+
+	strcpy(pszName, "Event4.VSV");
+}
+
+// FILE *output = nullptr;
+
+static void TextManip(void)
+{
+	u32 a3 = cpuRegs.GPR.n.a3.UL[0];
+	char *pText = (char *)vtlb_GetPhyPtr(a3);
+
+	Console.WriteLn("[TEXT]\t\"%s\"\n", pText);
+
+/*	if (output == nullptr)
+		output = fopen("C:\\Users\\Thomas\\ingametext.txt", "a+");
+
+	fprintf(output, "0x%04x:\t\"%s\"\n", a3, pText);	*/
+}
+
+typedef struct
+{
+	float x;
+	float y;
+	float z;
+	float w;
+} FVECTOR;
+
+static void ManipMoveSpeed(void)
+{
+	u32 a1 = cpuRegs.GPR.n.a1.UL[0];
+	FVECTOR *vOut = (FVECTOR *)vtlb_GetPhyPtr(a1);
+
+	vOut->x = 0.0;
+	vOut->y = 0.0;
+	vOut->z = 0.0;
+	vOut->w = 0.0;
+}
+
+static std::unordered_map<u32, void (*)()> hooks =
+{
+	{	0x001b3f38,		Force_BGM_Event4	},	//	play__15CBGMAgentStreamPCcis
+	{	0x0010f4c8,		TextManip			},	//	init__5CTextRt7CPointT1ZiRt6CSizeT1ZiPCciUiUiUiGt7CPointT1ZiGt6CSizeT1ZiPUi
+//	{	0x0014d0e8,		TextManip			},	//	setText__6CFntM2PCc
+//	{	0x002371c8,		ManipMoveSpeed		},	//	calcAvatarMoveSpeed__Q24ATEL7CAvatarR7FVECTOR
+	{	0x00237414,		ManipMoveSpeed		},	//	return; calcAvatarMoveSpeed__Q24ATEL7CAvatarR7FVECTOR
+};
+
+
+static inline void hookPC(const u32 pc)
+{
+	auto hook = hooks.find(pc);
+	if (hook == hooks.end())
+		return;
+
+	iFlushCall(FLUSH_EVERYTHING);
+	xFastCall((void *)hook->second);
+}
+
+
 void _eeFlushAllDirty()
 {
 	_flushXMMregs();
@@ -1703,6 +1769,8 @@ void recompileNextInstruction(bool delayslot, bool swapped_delay_slot)
 
 	const int old_code = cpuRegs.code;
 	EEINST* old_inst_info = g_pCurInstInfo;
+
+	hookPC(pc);
 
 	cpuRegs.code = *(int*)s_pCode;
 

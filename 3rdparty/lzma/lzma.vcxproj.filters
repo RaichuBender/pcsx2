@@ -39,6 +39,15 @@
     <ClCompile Include="src\7zStream.c" />
     <ClCompile Include="src\LzFindOpt.c" />
     <ClCompile Include="src\Sha256Opt.c" />
+    <ClCompile Include="src/Aes.c" />
+    <ClCompile Include="src/AesOpt.c" />
+    <ClCompile Include="src/DllSecur.c" />
+    <ClCompile Include="src/LzFindMt.c" />
+    <ClCompile Include="src/MtCoder.c" />
+    <ClCompile Include="src/MtDec.c" />
+    <ClCompile Include="src/Sort.c" />
+    <ClCompile Include="src/SwapBytes.c" />
+    <ClCompile Include="src/Threads.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Alloc.h" />
@@ -71,5 +80,14 @@
     <ClInclude Include="include\7zFile.h" />
     <ClInclude Include="include\7zTypes.h" />
     <ClInclude Include="include\7zVersion.h" />
+    <ClInclude Include="include/7zWindows.h" />
+    <ClInclude Include="include/Aes.h" />
+    <ClInclude Include="include/DllSecur.h" />
+    <ClInclude Include="include/LzFindMt.h" />
+    <ClInclude Include="include/MtCoder.h" />
+    <ClInclude Include="include/MtDec.h" />
+    <ClInclude Include="include/Sort.h" />
+    <ClInclude Include="include/SwapBytes.h" />
+    <ClInclude Include="include/Threads.h" />
   </ItemGroup>
 </Project>

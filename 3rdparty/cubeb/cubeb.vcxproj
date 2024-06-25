@@ -5,6 +5,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BF74C473-DC04-44B3-92E8-4145F4E77342}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
